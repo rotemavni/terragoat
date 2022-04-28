@@ -36,14 +36,25 @@ resource "aws_s3_bucket" "financials" {
 
 }
 
+resource "aws_s3_bucket" "financials2" {
+  # bucket is not encrypted
+  # bucket does not have access logs
+  # bucket does not have versioning
+  bucket        = "${local.resource_prefix.value}-financials"
+  acl           = "public"
+  force_destroy = true
+  tags = {
+    Name        = "${local.resource_prefix.value}-financials"
+    Environment = local.resource_prefix.value
+  }
+
+}
+
 resource "aws_s3_bucket" "operations" {
   # bucket is not encrypted
   # bucket does not have access logs
   bucket = "${local.resource_prefix.value}-operations"
   acl    = "private"
-  versioning {
-    enabled = true
-  }
   force_destroy = true
   tags = {
     Name        = "${local.resource_prefix.value}-operations"
@@ -75,7 +86,7 @@ resource "aws_s3_bucket" "logs" {
   server_side_encryption_configuration {
     rule {
       apply_server_side_encryption_by_default {
-        sse_algorithm     = "aws:kms"
+        sse_algorithm     = "hhhhh"
         kms_master_key_id = "${aws_kms_key.logs_key.arn}"
       }
     }
